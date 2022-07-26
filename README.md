@@ -1,35 +1,14 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
 ## Installation
 
 ```bash
 $ npm install
+```
+
+## .env 파일 작성
+
+```
+NODE_PORT= nodejs 실행 포트
+MONGODB_URI= 몽고디비 주소
 ```
 
 ## Running the app
@@ -40,34 +19,51 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ npm run test
+## API 명세 (SWAGGER)
 
-# e2e tests
-$ npm run test:e2e
+- 앱 실행 후 http://localhost:{PORT}/api-docs
 
-# test coverage
-$ npm run test:cov
-```
+---
 
-## Support
+## MongoDB SCHEMA
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Notices
 
-## Stay in touch
+| key         | type       | required | description        |
+| ----------- | ---------- | -------- | ------------------ |
+| \_id        | ObjectId   | auto     |
+| message     | string     | true     | 소식 제목          |
+| messageText | string     | true     | 소식 본문          |
+| owner       | Owners     | true     | 소식을 갖는 페이지 |
+| writer      | Users      | true     | 작성자             |
+| createdAt   | timestamps | auto     | 생성일             |
+| updatedAt   | timestamps | auto     | 수정일             |
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Owners
 
-## License
+| key         | type            | required | description              |
+| ----------- | --------------- | -------- | ------------------------ |
+| \_id        | ObjectId        | auto     |
+| name        | string          | true     | 페이지 명                |
+| city        | string          | false    | 도시 (학교 등 일 경우)   |
+| type        | enum(OwnerType) | true     | 페이지의 타입 ex)school  |
+| notices     | Notices[]       | false    | 페이지의 소식            |
+| subscribers | ObjectId[]      | false    | 페이지의 구독자 Users Id |
+| createdAt   | timestamps      | auto     | 생성일                   |
+| updatedAt   | timestamps      | auto     | 수정일                   |
 
-Nest is [MIT licensed](LICENSE).
+### Users
+
+| key              | type           | required | description                          |
+| ---------------- | -------------- | -------- | ------------------------------------ |
+| \_id             | ObjectId       | auto     |
+| name             | string         | true     | 유저명                               |
+| type             | enum(UserType) | true     | 유저의 타입 student, parent, teacher |
+| subscribingOwner | Owners[]       | false    | 구독중인 페이지                      |
+| newsFeed         | ObjectId[]     | false    | 구독중인 페이지의 소식 ObjectId 배열 |
+| createdAt        | timestamps     | auto     | 생성일                               |
+| updatedAt        | timestamps     | auto     | 수정일                               |
