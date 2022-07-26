@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { OwnerType } from '../common/type/owner-type.enum';
 import { convertStringToObjectId } from '../common/utils/convertStringToObjectId';
-import { Notice } from '../notices/INotice';
+import { Notice } from '../interface/INotice';
 import { Notices } from '../notices/notices.schema';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { Owners } from './owners.schema';
