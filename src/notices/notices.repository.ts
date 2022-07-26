@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { convertStringToObjectId } from '../common/utils/convertStringToObjectId';
-import { Notice } from './INotice';
+import { Notice } from '../interface/INotice';
 import { Notices } from './notices.schema';
 
 @Injectable()
